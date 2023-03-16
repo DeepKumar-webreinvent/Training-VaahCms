@@ -1,0 +1,28 @@
+{
+    "name": "vaahcms/products",
+    "description": "Product Managment Module for Admin (or Seller)",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "vaah",
+            "email": "support@vaah.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VaahCms\\Modules\\Products\\Providers\\ProductsServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "VaahCms\\Modules\\Products\\": ""
+        }
+    }
+}
