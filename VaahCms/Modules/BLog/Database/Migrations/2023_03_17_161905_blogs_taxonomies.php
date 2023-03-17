@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTexonomiesColumnToBlogModule extends Migration
+class BlogsTaxonomies extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,10 @@ class AddTexonomiesColumnToBlogModule extends Migration
     public function up()
     {
 
-        Schema::table('blog', function (Blueprint $table) {
-            $table->string('taxonomies')->after('slug')->nullable()->index();
+        Schema::create('blogs_taxonomies', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('blog_id')->unsigned();
+            $table->integer('taxonomy_id')->unsigned();
         });
     }
 
@@ -26,6 +28,6 @@ class AddTexonomiesColumnToBlogModule extends Migration
     */
     public function down()
     {
-        Schema::dropIfExists('add_texonomies_column_to_blog_module');
+        Schema::dropIfExists('blogs_taxonomies');
     }
 }

@@ -20,3 +20,5 @@ yarn.lock
 !/storage/framework/views/.gitkeep
 /storage/framework/cache/*
 !/storage/framework/cache/.gitkeep
+
+VaahCms/Modules/BLog/Database/Migrations/2023_03_17_132513_add_texonomies_column_to_blog_module.php

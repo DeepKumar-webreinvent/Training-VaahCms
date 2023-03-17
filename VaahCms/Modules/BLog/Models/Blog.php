@@ -5,6 +5,7 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use WebReinvent\VaahCms\Entities\Taxonomy;
 use WebReinvent\VaahCms\Traits\CrudWithUuidObservantTrait;
 use WebReinvent\VaahCms\Entities\User;
 
@@ -43,6 +44,12 @@ class Blog extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function taxonomies()
+    {
+        return $this->belongsToMany(Taxonomy::class ,'blogs_taxonomies','blog_id', 'taxonomy_id');
+    }
+
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -140,8 +147,8 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category'];
-        $item->taxonomies = implode(', ', $inputs['taxonomies']);
         $item->save();
+        $item->taxonomies()->attach($inputs['taxonomies']);
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -155,7 +162,7 @@ class Blog extends Model
 
         if(!isset($filter['sort']))
         {
-            return $query->orderBy('id', 'desc')->with('category');
+            return $query->orderBy('id', 'desc')->with('category', 'taxonomies');
         }
 
         $sort = $filter['sort'];
@@ -165,12 +172,12 @@ class Blog extends Model
 
         if(!$direction)
         {
-            return $query->orderBy($sort, 'asc')->with('category');
+            return $query->orderBy($sort, 'asc')->with('category', 'taxonomies');
         }
 
         $sort = explode(':', $sort);
 
-        return $query->orderBy($sort[0], $sort[1])->with('category');
+        return $query->orderBy($sort[0], $sort[1])->with('category', 'taxonomies');
     }
     //-------------------------------------------------
     public function scopeIsActiveFilter($query, $filter)
@@ -260,11 +267,6 @@ class Blog extends Model
 
         $response['success'] = true;
         $response['data'] = $list;
-
-//         foreach($list as $value){
-//
-//             $response['category'][]= Category::where('id',$value->category_id)->get();
-//         }
 
         return $response;
 
@@ -430,7 +432,7 @@ class Blog extends Model
     {
 
         $item = self::where('id', $id)
-            ->with(['createdByUser', 'updatedByUser', 'deletedByUser', 'category'])
+            ->with(['createdByUser', 'updatedByUser', 'deletedByUser', 'category', 'taxonomies'])
             ->withTrashed()
             ->first();
 
@@ -483,6 +485,7 @@ class Blog extends Model
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category'];
         $item->save();
+        $item->taxonomies()->sync($inputs['taxonomies']);
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';

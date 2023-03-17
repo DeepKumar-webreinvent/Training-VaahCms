@@ -18,7 +18,6 @@ onMounted(async () => {
 
 
 
-
 //--------form_menu
 const form_menu = ref();
 const toggleFormMenu = (event) => {
@@ -120,7 +119,7 @@ const toggleFormMenu = (event) => {
 
                 <VhField label="Taxonomies">
 
-                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name"  optionValue="name" placeholder="Select Taxonomies"
+                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name"  optionValue="id" placeholder="Select Taxonomies"
                                  :maxSelectedLabels="3" class="w-full md:w-14rem" />
 
                 </VhField>
