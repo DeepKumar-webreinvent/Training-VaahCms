@@ -44,6 +44,11 @@ const useVaah = vaah();
              </Column>
 
 
+             <Column  v-if="taxonomies != 'NULL'" field="taxonomies" header="Taxonomies"
+                     :sortable="true">
+             </Column>
+
+
                 <Column field="updated_at" header="Updated"
                         v-if="store.isViewLarge()"
                         style="width:150px;"

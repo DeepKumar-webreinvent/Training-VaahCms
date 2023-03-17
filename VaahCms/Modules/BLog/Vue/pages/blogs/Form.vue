@@ -120,8 +120,8 @@ const toggleFormMenu = (event) => {
 
                 <VhField label="Taxonomies">
 
-                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name" placeholder="Select Taxonomies"
-                                 :maxSelectedLabels="3" class="w-full md:w-20rem" />
+                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name"  optionValue="name" placeholder="Select Taxonomies"
+                                 :maxSelectedLabels="3" class="w-full md:w-14rem" />
 
                 </VhField>
 

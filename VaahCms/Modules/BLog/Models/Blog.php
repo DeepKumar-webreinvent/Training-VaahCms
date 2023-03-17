@@ -140,6 +140,7 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category'];
+        $item->taxonomies = implode(', ', $inputs['taxonomies']);
         $item->save();
 
         $response = self::getItem($item->id);
