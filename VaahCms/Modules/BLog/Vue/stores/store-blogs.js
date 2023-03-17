@@ -39,6 +39,7 @@ export const useBlogStore = defineStore({
         rows_per_page: [10,20,30,50,100,500],
         list: null,
         catagory: null,
+        taxonomies:null,
         item: null,
         fillable:null,
         empty_query:empty_states.query,
@@ -187,6 +188,7 @@ export const useBlogStore = defineStore({
             {
                 this.assets = data;
                 this.catagory = data.catagory;
+                this.taxonomies= data.taxonomies;
                 if(data.rows)
                 {
                     this.query.rows = data.rows;

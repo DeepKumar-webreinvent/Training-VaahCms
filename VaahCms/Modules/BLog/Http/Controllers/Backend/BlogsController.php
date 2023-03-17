@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use VaahCms\Modules\Blog\Models\Blog;
 use VaahCms\Modules\Blog\Models\Category;
+use WebReinvent\VaahCms\Entities\Taxonomy;
+
+
 
 
 class BlogsController extends Controller
@@ -49,6 +52,8 @@ class BlogsController extends Controller
             $data['actions'] = [];
 
             $data['catagory'] = Category::where('is_active',1)->get();
+
+            $data['taxonomies'] = Taxonomy::getTaxonomyByType('blog-tag');
 
             $response['success'] = true;
             $response['data'] = $data;
