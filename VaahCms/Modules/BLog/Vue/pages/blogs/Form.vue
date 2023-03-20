@@ -113,13 +113,13 @@ const toggleFormMenu = (event) => {
 
                 <VhField label="Category">
 
-                        <Dropdown v-model="store.item.category" :options="store.catagory" optionLabel="name" optionValue="id" placeholder="Select a Category" class="w-full md:w-14rem" />
+                        <Dropdown v-model="store.item.category" :options="store.catagory" optionLabel="name" placeholder="Select a Category" class="w-full md:w-14rem" />
 
                 </VhField>
 
                 <VhField label="Taxonomies">
 
-                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name"  optionValue="id" placeholder="Select Taxonomies"
+                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name"  placeholder="Select Taxonomies"
                                  :maxSelectedLabels="3" class="w-full md:w-14rem" />
 
                 </VhField>

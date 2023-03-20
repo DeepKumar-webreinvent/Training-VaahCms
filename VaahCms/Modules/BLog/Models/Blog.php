@@ -146,9 +146,16 @@ class Blog extends Model
         $item = new self();
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
-        $item->category_id = $inputs['category'];
+        $item->category_id = $inputs['category']['id'];
         $item->save();
-        $item->taxonomies()->attach($inputs['taxonomies']);
+
+        $taxonomies_id = [];
+        $taxonomies= $inputs['taxonomies'];
+        foreach ($taxonomies as $taxonomy)
+        {
+          array_push($taxonomies_id,$taxonomy['id']);
+        }
+        $item->taxonomies()->attach($taxonomies_id);
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -452,7 +459,6 @@ class Blog extends Model
     public static function updateItem($request, $id)
     {
         $inputs = $request->all();
-
         $validation = self::validation($inputs);
         if (!$validation['success']) {
             return $validation;
@@ -483,9 +489,17 @@ class Blog extends Model
         $item = self::where('id', $id)->withTrashed()->first();
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
-        $item->category_id = $inputs['category'];
+        $item->category_id = $inputs['category']['id'];
         $item->save();
-        $item->taxonomies()->sync($inputs['taxonomies']);
+
+        $taxonomies_id = [];
+        $taxonomies= $inputs['taxonomies'];
+        foreach ($taxonomies as $taxonomy)
+        {
+            array_push($taxonomies_id,$taxonomy['id']);
+        }
+
+        $item->taxonomies()->sync($taxonomies_id);
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -544,6 +558,8 @@ class Blog extends Model
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
+            'category' => 'required',
+            'taxonomies' => 'required',
         );
 
         $validator = \Validator::make($inputs, $rules);
