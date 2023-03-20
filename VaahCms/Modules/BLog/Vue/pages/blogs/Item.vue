@@ -27,7 +27,7 @@ onMounted(async () => {
     {
         await store.getItem(route.params.id);
     }
-    console.log(store.item);
+
     /**
      * Watch if url record id is changed, if changed
      * then fetch the new records from database
@@ -45,6 +45,21 @@ onMounted(async () => {
     )*/
 
 });
+
+let item = store.item.taxonomies;
+let taxonomies_name = "";
+if(item.length > 0)
+{
+    item.forEach(myFunction);
+}
+else
+{
+    taxonomies_name = "-";
+}
+
+function myFunction(item, index) {
+    taxonomies_name +=  item.name + ',';
+}
 
 //--------toggle item menu
 const item_menu_state = ref();
@@ -149,6 +164,14 @@ const toggleItemMenu = (event) => {
                         <template v-else-if="column === 'category'">
                             <VhViewRow :label="column"
                                        :value="value.name"
+
+                            />
+                        </template>
+
+                        <template v-else-if="column === 'taxonomies'">
+
+                            <VhViewRow :label="column"
+                                       :value="taxonomies_name"
 
                             />
                         </template>

@@ -4,6 +4,7 @@ import { useBlogStore } from '../../../stores/store-blogs'
 
 const store = useBlogStore();
 const useVaah = vaah();
+
 </script>
 
 <template>
@@ -42,10 +43,17 @@ const useVaah = vaah();
 
              </Column>
 
-             <Column   field="taxonomies" header="Taxonomies"
+             <Column    header="Taxonomies"
                      v-if="store.isViewLarge()"
                      :sortable="true">
+
+                 <template #body="prop">
+                     <div v-for="(taxonomy) in prop.data.taxonomies">
+                               {{taxonomy.name}}
+                     </div>
+                 </template>
              </Column>
+
 
 
                 <Column field="updated_at" header="Updated"
