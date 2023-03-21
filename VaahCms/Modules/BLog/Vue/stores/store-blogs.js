@@ -631,6 +631,12 @@ export const useBlogStore = defineStore({
             this.$router.push({name: 'blogs.form', params:{id:item.id}})
         },
         //---------------------------------------------------------------------
+        toViewTaxonomies(item)
+        {
+            this.item = item;
+            this.$router.push({name: 'blogs.taxonomies', params:{id:item.id}})
+        },
+        //---------------------------------------------------------------------
         isViewLarge()
         {
             return this.view === 'large';

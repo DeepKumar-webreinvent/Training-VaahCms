@@ -54,6 +54,15 @@ const useVaah = vaah();
                  </template>
              </Column>
 
+             <Column    header="Taxonomies"
+                        v-if="store.isViewLarge()"
+                        :sortable="false">
+
+                 <template #body="prop">
+                     <Button :label="prop.data.taxonomies.length + '/' + store.taxonomies.length" v-tooltip.top="'view taxonomies'" rounded  @click="store.toViewTaxonomies(prop.data)"/>
+                 </template>
+             </Column>
+
 
 
                 <Column field="updated_at" header="Updated"
