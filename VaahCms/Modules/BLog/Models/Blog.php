@@ -37,7 +37,6 @@ class Blog extends Model
     //-------------------------------------------------
     protected $appends = [
     ];
-
     //-------------------------------------------------
 
     public function category()
@@ -250,18 +249,31 @@ class Blog extends Model
         }
         $category = $filter['category'];
 
-        return  $query->where('category_id', $category)->get();
+        return  $query->where('category_id', $category);
 
+    }
+    //-----------------------------------------------------
+    public function scopeTaxonomyFilter($query, $filter)
+    {
+        if(!isset($filter['taxonomy']))
+        {
+            return $query;
+        }
+        $taxonomy = $filter['taxonomy'];
+
+        return $query->with('taxonomies')->whereHas('taxonomies' , function($q) use($taxonomy){
+               $q->where('taxonomy_id', $taxonomy );
+        });
     }
     //-------------------------------------------------
     public static function getList($request)
     {
-
         $list = self::getSorted($request->filter);
         $list->isActiveFilter($request->filter);
         $list->trashedFilter($request->filter);
         $list->searchFilter($request->filter);
         $list->categoryFilter($request->filter);
+        $list->taxonomyFilter($request->filter);
 
         $rows = config('vaahcms.per_page');
 

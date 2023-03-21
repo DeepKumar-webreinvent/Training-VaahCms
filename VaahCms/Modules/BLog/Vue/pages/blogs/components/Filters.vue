@@ -117,6 +117,20 @@ const store = useBlogStore();
 
             </VhFieldVertical>
 
+            <VhFieldVertical >
+                <template #label>
+                    <b>Text:</b>
+                </template>
+
+                <div v-for="(value, index) in store.taxonomies" :key="value.id" class="flex align-items-center">
+                    <div class="field-radiobutton">
+                        <RadioButton v-model="store.query.filter.taxonomy"  name="taxonomy" :value="value.id" />
+                        <label :for="value.name" class="ml-2">{{ value.name }}</label>
+                    </div>
+                </div>
+
+            </VhFieldVertical>
+
 
         </Sidebar>
 

@@ -43,13 +43,13 @@ const useVaah = vaah();
 
              </Column>
 
-             <Column    header="Taxonomies"
+             <Column    header="Text"
                      v-if="store.isViewLarge()"
                      :sortable="true">
 
                  <template #body="prop">
                      <div v-for="(taxonomy) in prop.data.taxonomies">
-                               {{taxonomy.name}}
+                         <Tag :value="taxonomy.name"></Tag>
                      </div>
                  </template>
              </Column>

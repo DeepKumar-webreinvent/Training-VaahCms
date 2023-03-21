@@ -46,21 +46,6 @@ onMounted(async () => {
 
 });
 
-let item = store.item.taxonomies;
-let taxonomies_name = "";
-if(item.length > 0)
-{
-    item.forEach(myFunction);
-}
-else
-{
-    taxonomies_name = "-";
-}
-
-function myFunction(item, index) {
-    taxonomies_name +=  item.name + ',';
-}
-
 //--------toggle item menu
 const item_menu_state = ref();
 const toggleItemMenu = (event) => {
@@ -168,12 +153,13 @@ const toggleItemMenu = (event) => {
                             />
                         </template>
 
-                        <template v-else-if="column === 'taxonomies'">
-
+                        <template v-else-if="column === 'taxonomies'" data="#value">
                             <VhViewRow :label="column"
-                                       :value="taxonomies_name"
 
                             />
+                            <div v-for="(taxonomy) in value">
+                                <Tag :value="taxonomy.name"></Tag>
+                            </div>
                         </template>
 
                         <template v-else-if="(column === 'created_by_user' || column === 'updated_by_user'  || column === 'deleted_by_user') && (typeof value === 'object' && value !== null)">

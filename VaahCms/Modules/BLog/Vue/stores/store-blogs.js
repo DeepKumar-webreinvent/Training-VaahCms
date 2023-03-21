@@ -19,6 +19,7 @@ let empty_states = {
             trashed: null,
             sort: null,
             category:null,
+            taxonomy:null,
         },
     },
     action: {
