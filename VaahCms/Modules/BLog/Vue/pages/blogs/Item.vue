@@ -154,7 +154,7 @@ const toggleItemMenu = (event) => {
                         </template>
 
                         <template v-else-if="column === 'taxonomies'" data="#value">
-                            <VhViewRow :label="column"
+                            <VhViewRow label="Tag"
 
                             />
                             <div v-for="(taxonomy) in value">
