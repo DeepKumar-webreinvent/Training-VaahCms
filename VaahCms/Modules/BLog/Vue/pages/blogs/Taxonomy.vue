@@ -14,21 +14,6 @@ onMounted(async () => {
         await store.getItem(route.params.id);
     }
 });
-
-// let taxonomies_name = reactive([]);
-// if ('taxonomies' in store.item) {
-//      let taxonomies = store.item.taxonomies;
-//     taxonomies.forEach(addTaxonomyName);
-// }
-// function addTaxonomyName(item, index) {
-//     taxonomies_name.push(item.name);
-// }
-
-// const checkTaxonomystatus = computed((item) => {
-//     console.log(item);
-//     return true;
-// });
-
 function checkTaxonomystatus(taxonomies, currentTaxonomy)
 {
 
@@ -67,8 +52,8 @@ function checkTaxonomystatus(taxonomies, currentTaxonomy)
                 <tbody>
                 <tr v-for="(taxonomy, index) in store.taxonomies" :key="taxonomy.id">
                     <td>{{taxonomy.name}}</td>
-                        <Button label="Yes"  size="small" v-if="checkTaxonomystatus(store.item.taxonomies, taxonomy)" rounded/>
-                        <Button label="No"  size="small" v-else rounded/>
+                        <Button label="Yes"  size="small" severity="success" v-if="checkTaxonomystatus(store.item.taxonomies, taxonomy)"  @click="changePermission()" rounded/>
+                        <Button label="No"  size="small" v-else  @click="changeStatus(props.row)" rounded/>
                 </tr>
                 </tbody>
             </table>
