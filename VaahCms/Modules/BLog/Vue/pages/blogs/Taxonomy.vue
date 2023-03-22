@@ -2,10 +2,11 @@
 <script setup>
 import { useBlogStore } from '../../stores/store-blogs'
 import {useRoute} from 'vue-router';
-import {onMounted, ref, reactive} from "vue";
+import {onMounted, ref, reactive, computed } from "vue";
 
 const store = useBlogStore();
 const route = useRoute();
+// const selectedCategories = ref(['comedy']);
 
 onMounted(async () => {
     if(route.params && route.params.id)
@@ -14,14 +15,32 @@ onMounted(async () => {
     }
 });
 
-let taxonomies_name = reactive([]);
-if ('taxonomies' in store.item) {
-     let taxonomies = store.item.taxonomies;
-    taxonomies.forEach(addTaxonomyName);
+// let taxonomies_name = reactive([]);
+// if ('taxonomies' in store.item) {
+//      let taxonomies = store.item.taxonomies;
+//     taxonomies.forEach(addTaxonomyName);
+// }
+// function addTaxonomyName(item, index) {
+//     taxonomies_name.push(item.name);
+// }
+
+// const checkTaxonomystatus = computed((item) => {
+//     console.log(item);
+//     return true;
+// });
+
+function checkTaxonomystatus(taxonomies, currentTaxonomy)
+{
+
+    const taxonomiesName = taxonomies.map(getTaxonomiesName)
+
+    function getTaxonomiesName(value) {
+        return [value.name].join(",");
+    }
+
+    return  (taxonomiesName.includes(currentTaxonomy.name));
 }
-function addTaxonomyName(item, index) {
-    taxonomies_name.push(item.name);
-}
+
 </script>
 
 <template>
@@ -31,7 +50,7 @@ function addTaxonomyName(item, index) {
                 <div class="flex flex-row">
                     <div class="p-panel-title">
                             <span>
-                                Taxonomies
+                                Tag
                             </span>
                     </div>
 
@@ -48,9 +67,8 @@ function addTaxonomyName(item, index) {
                 <tbody>
                 <tr v-for="(taxonomy, index) in store.taxonomies" :key="taxonomy.id">
                     <td>{{taxonomy.name}}</td>
-                    <td>
-                        <Button label="Submit" size="small"  rounded/>
-                    </td>
+                        <Button label="Yes"  size="small" v-if="checkTaxonomystatus(store.item.taxonomies, taxonomy)" rounded/>
+                        <Button label="No"  size="small" v-else rounded/>
                 </tr>
                 </tbody>
             </table>
