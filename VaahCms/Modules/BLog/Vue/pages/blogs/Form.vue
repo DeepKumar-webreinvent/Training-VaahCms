@@ -17,7 +17,10 @@ onMounted(async () => {
 });
 
 
-
+const onFileChange = async (event) => {
+    console.log(event.files[0]);
+    store.item.image = event.files[0];
+}
 //--------form_menu
 const form_menu = ref();
 const toggleFormMenu = (event) => {
@@ -96,6 +99,13 @@ const toggleFormMenu = (event) => {
 
 
             <div v-if="store.item">
+                <VhField label="Image">
+                    <FileUpload mode="basic"
+                                name="demo[]"
+                                accept="image/*"
+                                @select="onFileChange" />
+                </VhField>
+
                 <VhField label="Name">
                     <InputText class="w-full"
                                name="blogs-name"

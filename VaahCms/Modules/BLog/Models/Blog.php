@@ -116,8 +116,8 @@ class Blog extends Model
     //-------------------------------------------------
     public static function createItem($request)
     {
-
         $inputs = $request->all();
+        dd($inputs);
         $validation = self::validation($inputs);
         if (!$validation['success']) {
             return $validation;
@@ -146,6 +146,12 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category']['id'];
+
+//        $upload_path = public_path('images');
+//        $image = $request->file('image');
+//        $file_name = time() . '.' . $inputs['image'];
+//        $image->move($upload_path, $file_name);
+
         $item->save();
 
         $taxonomies_id = [];
@@ -572,6 +578,7 @@ class Blog extends Model
             'slug' => 'required|max:150',
             'category' => 'required',
             'taxonomies' => 'required',
+            'image' => 'required|max:1024'
         );
 
         $validator = \Validator::make($inputs, $rules);
