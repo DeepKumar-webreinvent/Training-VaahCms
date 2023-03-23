@@ -596,6 +596,27 @@ class Blog extends Model
     }
 
     //-------------------------------------------------
+
+    public static function changeTaxonomyStatus($request,$id){
+
+        $recordCount = \DB::table('blogs_taxonomies')
+                ->whereBlogId($id)
+                ->whereTaxonomyId($request->taxonomy_id)
+                ->count();
+
+        if($recordCount){
+            $item = self::where('id', $id)->first();
+            $item->taxonomies()->detach($request->taxonomy_id);
+        }
+        else{
+            $item = self::where('id', $id)->first();
+            $item->taxonomies()->attach($request->taxonomy_id);
+        }
+
+        $response = self::getItem($id);
+        $response['messages'][] = 'Status change successfully.';
+        return $response;
+    }
     //-------------------------------------------------
     //-------------------------------------------------
 

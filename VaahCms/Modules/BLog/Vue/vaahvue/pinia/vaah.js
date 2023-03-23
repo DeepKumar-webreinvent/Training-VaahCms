@@ -32,7 +32,6 @@ export const vaah = defineStore({
                 headers: null,
                 show_success: true,
             }
-
             if(options)
             {
                 for(let key in options)

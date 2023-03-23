@@ -47,7 +47,7 @@ const useVaah = vaah();
                         :sortable="false">
 
                  <template #body="prop">
-                     <Button :label="prop.data.taxonomies.length + '/' + store.taxonomies.length" v-tooltip.top="'view taxonomies'" rounded  @click="store.toViewTaxonomies(prop.data)"/>
+                     <Button :label="prop.data.taxonomies.length + '/' + store.taxonomies.length" v-tooltip.top="'view Tags'" rounded  @click="store.toViewTaxonomies(prop.data)"/>
                  </template>
              </Column>
 

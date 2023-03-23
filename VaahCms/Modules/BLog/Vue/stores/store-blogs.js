@@ -244,6 +244,31 @@ export const useBlogStore = defineStore({
             await this.getFormMenu();
         },
         //---------------------------------------------------------------------
+
+        async changeStatus(blogId, taxonomyId){
+             if(blogId &&  taxonomyId){
+                 let options = {
+                     params: {
+                         taxonomy_id:  taxonomyId
+                     },
+                     method: 'POST',
+                 };
+                 await vaah().ajax(
+                     ajax_url+'/status/'+blogId,
+                     this.changeStatusAfter,
+                     options
+                 );
+             }
+        },
+        //---------------------------------------------------------------------
+         async changeStatusAfter(data){
+            if(data){
+                this.item = data;
+                await this.getList();
+            }
+         },
+
+        //---------------------------------------------------------------------
         isListActionValid()
         {
 

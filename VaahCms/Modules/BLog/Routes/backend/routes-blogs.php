@@ -3,9 +3,9 @@
 Route::group(
     [
         'prefix' => 'backend/blog/blogs',
-        
+
         'middleware' => ['web', 'has.backend.access'],
-        
+
         'namespace' => 'Backend',
 ],
 function () {
@@ -63,6 +63,14 @@ function () {
      */
     Route::any('/{id}/action/{action}', 'BlogsController@itemAction')
         ->name('vh.backend.blog.blogs.item.action');
+
+    //---------------------------------------------------------
+
+    /**
+     * Item actions with taxonomies
+     */
+    Route::post('/status/{blogId}', 'BlogsController@changeTaxonomyStatus')
+        ->name('vh.backend.blog.blogs.item.action.changetaxonomystatus');
 
     //---------------------------------------------------------
 

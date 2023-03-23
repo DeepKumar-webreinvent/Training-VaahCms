@@ -110,7 +110,6 @@ class BlogsController extends Controller
     public function listAction(Request $request, $type)
     {
 
-
         try{
             return Blog::listAction($request, $type);
         }catch (\Exception $e){
@@ -228,6 +227,22 @@ class BlogsController extends Controller
         }
     }
     //----------------------------------------------------------
+
+    public function changeTaxonomyStatus(Request $request,$id){
+        try{
+            return Blog::changeTaxonomyStatus($request,$id);
+        }catch (\Exception $e){
+            $response = [];
+            $response['status'] = 'failed';
+            if(env('APP_DEBUG')){
+                $response['errors'][] = $e->getMessage();
+                $response['hint'] = $e->getTrace();
+            } else{
+                $response['errors'][] = 'Something went wrong.';
+                return $response;
+            }
+        }
+    }
 
 
 }
