@@ -7,6 +7,7 @@ import {useRoute} from 'vue-router';
 
 const store = useBlogStore();
 const route = useRoute();
+let imageObj = reactive({});
 onMounted(async () => {
     if(route.params && route.params.id)
     {
@@ -18,9 +19,21 @@ onMounted(async () => {
 
 
 const onFileChange = async (event) => {
-    console.log(event.files[0]);
-    store.item.image = event.files[0];
+    // console.log(event.files[0]);
+    // store.item.image = event.files[0];
+    const selectFile = event.files[0];
+    let reader  = new FileReader()
+    reader.readAsDataURL(selectFile)
+    reader.addEventListener('load', () => {
+        imageObj = reader.result
+        console.log('select image', reader.result)
+    }, false)
 }
+
+// const onFile = (e) => {
+//     // console.log( e.target.files[0]);
+//     store.item.image = e.target.files[0];
+// }
 //--------form_menu
 const form_menu = ref();
 const toggleFormMenu = (event) => {
@@ -105,6 +118,10 @@ const toggleFormMenu = (event) => {
                                 accept="image/*"
                                 @select="onFileChange" />
                 </VhField>
+
+<!--                <input type="file"-->
+<!--                       id="exampleInputFile"-->
+<!--                       v-on:change="onFile" name="image">-->
 
                 <VhField label="Name">
                     <InputText class="w-full"
