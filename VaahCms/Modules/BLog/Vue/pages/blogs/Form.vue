@@ -19,15 +19,8 @@ onMounted(async () => {
 
 
 const onFileChange = async (event) => {
-    // console.log(event.files[0]);
-    // store.item.image = event.files[0];
-    const selectFile = event.files[0];
-    let reader  = new FileReader()
-    reader.readAsDataURL(selectFile)
-    reader.addEventListener('load', () => {
-        imageObj = reader.result
-        console.log('select image', reader.result)
-    }, false)
+    console.log(event.files[0]);
+    store.item.image = event.files[0];
 }
 
 // const onFile = (e) => {
@@ -114,7 +107,6 @@ const toggleFormMenu = (event) => {
             <div v-if="store.item">
                 <VhField label="Image">
                     <FileUpload mode="basic"
-                                name="demo[]"
                                 accept="image/*"
                                 @select="onFileChange" />
                 </VhField>
