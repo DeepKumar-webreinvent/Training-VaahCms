@@ -117,7 +117,6 @@ class Blog extends Model
     public static function createItem($request)
     {
         $inputs = $request->all();
-        dd($inputs);
         $validation = self::validation($inputs);
         if (!$validation['success']) {
             return $validation;
@@ -146,12 +145,7 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category']['id'];
-
-//        $upload_path = public_path('images');
-//        $image = $request->file('image');
-//        $file_name = time() . '.' . $inputs['image'];
-//        $image->move($upload_path, $file_name);
-
+        $item->image_name = $inputs['image'];
         $item->save();
 
         $taxonomies_id = [];
@@ -578,7 +572,7 @@ class Blog extends Model
             'slug' => 'required|max:150',
             'category' => 'required',
             'taxonomies' => 'required',
-            'image' => 'required|max:1024'
+            'image' => 'required|mimes:png,jpg,jpeg|max:1024'
         );
 
         $validator = \Validator::make($inputs, $rules);
@@ -625,6 +619,20 @@ class Blog extends Model
         return $response;
     }
     //-------------------------------------------------
+    public static function imageUpload($request){
+        if($request->hasFile('image')){
+            $upload_path = public_path('images');
+            $image = $request->file('image');
+            $file_name = time() . '.' .  $image->getClientOriginalName();
+            $image->move($upload_path, $file_name);
+
+            $response['success'] = true;
+            $response['file_name'] = $file_name;
+
+            return $response;
+
+        }
+    }
     //-------------------------------------------------
 
 }

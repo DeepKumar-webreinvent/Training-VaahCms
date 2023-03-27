@@ -1,13 +1,17 @@
 <script setup>
 import {onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import { useBlogStore } from '../../stores/store-blogs'
+import axios from 'axios'
 
 import VhField from './../../vaahvue/vue-three/primeflex/VhField.vue'
 import {useRoute} from 'vue-router';
 
 const store = useBlogStore();
 const route = useRoute();
-let imageObj = reactive({});
+
+let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
+let ajax_url = base_url + "/backend/blog/blogs";
+
 onMounted(async () => {
     if(route.params && route.params.id)
     {
@@ -19,14 +23,22 @@ onMounted(async () => {
 
 
 const onFileChange = async (event) => {
-    console.log(event.files[0]);
-    store.item.image = event.files[0];
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data',
+        }
+    }
+
+    let formData  = new FormData();
+    formData.append('image', event.files[0]);
+    let url =  ajax_url+ "/image/upload";
+    await  axios.post(url, formData, config).then(res =>{
+       store.item.image = res.data.file_name;
+    }).catch(error => {
+        console.log("errors" + error);
+    });
 }
 
-// const onFile = (e) => {
-//     // console.log( e.target.files[0]);
-//     store.item.image = e.target.files[0];
-// }
 //--------form_menu
 const form_menu = ref();
 const toggleFormMenu = (event) => {
@@ -108,6 +120,7 @@ const toggleFormMenu = (event) => {
                 <VhField label="Image">
                     <FileUpload mode="basic"
                                 accept="image/*"
+                                customUpload
                                 @select="onFileChange" />
                 </VhField>
 
@@ -132,14 +145,22 @@ const toggleFormMenu = (event) => {
 
                 <VhField label="Category">
 
-                        <Dropdown v-model="store.item.category" :options="store.catagory" optionLabel="name" placeholder="Select a Category" class="w-full md:w-14rem" />
+                        <Dropdown v-model="store.item.category"
+                                  :options="store.catagory"
+                                  optionLabel="name"
+                                  placeholder="Select a Category"
+                                  class="w-full md:w-14rem" />
 
                 </VhField>
 
                 <VhField label="Taxonomies">
 
-                    <MultiSelect v-model="store.item.taxonomies" :options="store.taxonomies" optionLabel="name"  placeholder="Select Taxonomies"
-                                 :maxSelectedLabels="3" class="w-full md:w-14rem" />
+                    <MultiSelect v-model="store.item.taxonomies"
+                                 :options="store.taxonomies"
+                                 optionLabel="name"
+                                 placeholder="Select Taxonomies"
+                                 :maxSelectedLabels="3"
+                                 class="w-full md:w-14rem" />
 
                 </VhField>
 

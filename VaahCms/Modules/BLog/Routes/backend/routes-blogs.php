@@ -74,4 +74,12 @@ function () {
 
     //---------------------------------------------------------
 
+    /**
+     * Image Upload
+     */
+    Route::post('/image/upload', 'BlogsController@imageUpload')
+        ->name('vh.backend.blog.blogs.item.action.imageupload');
+
+    //---------------------------------------------------------
+
 });
