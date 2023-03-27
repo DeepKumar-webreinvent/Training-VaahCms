@@ -10,6 +10,7 @@ import Table from "./components/Table.vue";
 const store = useBlogStore();
 const route = useRoute();
 
+
 import { useConfirm } from "primevue/useconfirm";
 const confirm = useConfirm();
 
@@ -43,6 +44,7 @@ onMounted(async () => {
      */
     await store.getList();
 });
+
 
 </script>
 <template>

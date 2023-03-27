@@ -1,5 +1,6 @@
 <script setup>
 import {vaah} from '../../pinia/vaah.js'
+let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 
 const props = defineProps({
     label: {
@@ -50,6 +51,16 @@ const props = defineProps({
             <td colspan="2">
                 <Tag value="Yes" v-if="value===1" severity="success"></Tag>
                 <Tag v-else value="No" severity="danger"></Tag>
+            </td>
+        </template>
+        <template v-else-if="type==='image'">
+            <td colspan="2">
+                <img v-if="value !== 'NULL'"
+                     :src="base_url + '/images/' +value"
+                     alt="image"
+                     height="150"
+                     width="150">
+                <p v-else> - </p>
             </td>
         </template>
         <template v-else>

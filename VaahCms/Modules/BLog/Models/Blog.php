@@ -502,6 +502,7 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category']['id'];
+        $item->image_name = $inputs['image'];
         $item->save();
 
         $taxonomies_id = [];
@@ -572,7 +573,7 @@ class Blog extends Model
             'slug' => 'required|max:150',
             'category' => 'required',
             'taxonomies' => 'required',
-            'image' => 'required|mimes:png,jpg,jpeg|max:1024'
+            'image' => 'required'
         );
 
         $validator = \Validator::make($inputs, $rules);
@@ -620,6 +621,20 @@ class Blog extends Model
     }
     //-------------------------------------------------
     public static function imageUpload($request){
+//        $inputs = $request->all();
+//
+//        $rules = array(
+//            'image' => 'required|mimes:png|max:1024'
+//        );
+//
+//        $validator = \Validator::make($inputs, $rules);
+//        if ($validator->fails()) {
+//            $messages = $validator->errors();
+//            $response['success'] = false;
+//            $response['messages'] = $messages->all();
+//            return $response;
+//        }
+
         if($request->hasFile('image')){
             $upload_path = public_path('images');
             $image = $request->file('image');

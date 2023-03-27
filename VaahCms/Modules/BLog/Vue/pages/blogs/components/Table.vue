@@ -1,9 +1,12 @@
 <script setup>
 import { vaah } from '../../../vaahvue/pinia/vaah'
 import { useBlogStore } from '../../../stores/store-blogs'
+import {ref} from "vue";
+let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 
 const store = useBlogStore();
 const useVaah = vaah();
+const visible = ref(false);
 </script>
 
 <template>
@@ -24,6 +27,21 @@ const useVaah = vaah();
 
             <Column field="id" header="ID" :style="{width: store.getIdWidth()}" :sortable="true">
             </Column>
+
+             <Column    header="Image"
+                        v-if="store.isViewLarge()"
+                        :sortable="false">
+
+                 <template #body="prop">
+                         <img v-if="prop.data.image_name !== 'NULL'"
+                              :src="base_url + '/images/' + prop.data.image_name"
+                              alt="image"
+                              height="150"
+                              width="150"
+                              @click="visible = true">
+                         <p v-else> - </p>
+                 </template>
+             </Column>
 
             <Column field="name" header="Name"
                     :sortable="true">
@@ -47,7 +65,10 @@ const useVaah = vaah();
                         :sortable="false">
 
                  <template #body="prop">
-                     <Button :label="prop.data.taxonomies.length + '/' + store.taxonomies.length" v-tooltip.top="'view Tags'" rounded  @click="store.toViewTaxonomies(prop.data)"/>
+                     <Button :label="prop.data.taxonomies.length + '/' + store.taxonomies.length"
+                             v-tooltip.top="'view Tags'"
+                             rounded
+                             @click="store.toViewTaxonomies(prop.data)"/>
                  </template>
              </Column>
 

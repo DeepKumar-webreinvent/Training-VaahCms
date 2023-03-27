@@ -146,6 +146,13 @@ const toggleItemMenu = (event) => {
                             />
                         </template>
 
+                        <template v-else-if="column === 'image_name'">
+                            <VhViewRow label="Image"
+                                       :value="value"
+                                       type="image"
+                            />
+                        </template>
+
                         <template v-else-if="column === 'category'">
                             <VhViewRow :label="column"
                                        :value="value.name"
