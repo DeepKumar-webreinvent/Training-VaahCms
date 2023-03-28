@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import VhField from './../../vaahvue/vue-three/primeflex/VhField.vue'
 import {useRoute} from 'vue-router';
+import {vaah} from "../../vaahvue/pinia/vaah";
 
 const store = useBlogStore();
 const route = useRoute();
@@ -37,7 +38,9 @@ const onFileChange = async (event) => {
     }).catch(error => {
         console.log("errors" + error);
     });
+
 }
+
 
 //--------form_menu
 const form_menu = ref();
@@ -118,15 +121,13 @@ const toggleFormMenu = (event) => {
 
             <div v-if="store.item">
                 <VhField label="Image">
-                    <FileUpload mode="basic"
+                    <FileUpload
                                 accept="image/*"
+                                :multiple="true"
                                 customUpload
                                 @select="onFileChange" />
-                </VhField>
 
-<!--                <input type="file"-->
-<!--                       id="exampleInputFile"-->
-<!--                       v-on:change="onFile" name="image">-->
+                </VhField>
 
                 <VhField label="Name">
                     <InputText class="w-full"

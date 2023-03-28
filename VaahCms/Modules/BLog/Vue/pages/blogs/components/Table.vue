@@ -7,6 +7,11 @@ let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 const store = useBlogStore();
 const useVaah = vaah();
 const visible = ref(false);
+let img = ref("");
+const showImage = (imageName) => {
+     img.value = base_url + '/images/' + imageName;
+     visible.value = true;
+}
 </script>
 
 <template>
@@ -32,14 +37,19 @@ const visible = ref(false);
                         v-if="store.isViewLarge()"
                         :sortable="false">
 
+
                  <template #body="prop">
-                         <img v-if="prop.data.image_name !== 'NULL'"
-                              :src="base_url + '/images/' + prop.data.image_name"
-                              alt="image"
-                              height="150"
-                              width="150"
-                              @click="visible = true">
-                         <p v-else> - </p>
+                     <Button label="Show"
+                             icon="pi pi-external-link"
+                             @click="showImage(prop.data.image_name)"
+                             v-if="prop.data.image_name"/>
+                     <p v-else> - </p>
+                     <Dialog v-model:visible="visible" maximizable  header="Image">
+                     <img :src="img"
+                          alt="image"
+                          height="1000"
+                          width="1000">
+                     </Dialog>
                  </template>
              </Column>
 
