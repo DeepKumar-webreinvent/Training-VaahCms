@@ -9,6 +9,7 @@ import {vaah} from "../../vaahvue/pinia/vaah";
 
 const store = useBlogStore();
 const route = useRoute();
+let attachment = reactive([]);
 
 let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 let ajax_url = base_url + "/backend/blog/blogs";
@@ -30,11 +31,24 @@ const onFileChange = async (event) => {
         }
     }
 
+    let selectedFiles = event.files;
+    if(!selectedFiles.length)
+    {
+        return false;
+    }
+    for(let i=0; i<selectedFiles.length; i++){
+         attachment.push(selectedFiles[i]);
+    }
+
     let formData  = new FormData();
-    formData.append('image', event.files[0]);
+    for(let i=0; i<attachment.length; i++){
+        formData.append('images[]',attachment[i]);
+    }
+
+    // formData.append('image', event.files[0]);
     let url =  ajax_url+ "/image/upload";
     await  axios.post(url, formData, config).then(res =>{
-       store.item.image = res.data.file_name;
+       store.item.images = res.data.files_name;
     }).catch(error => {
         console.log("errors" + error);
     });
@@ -122,6 +136,7 @@ const toggleFormMenu = (event) => {
             <div v-if="store.item">
                 <VhField label="Image">
                     <FileUpload
+                                mode="basic"
                                 accept="image/*"
                                 :multiple="true"
                                 customUpload

@@ -49,6 +49,11 @@ class Blog extends Model
         return $this->belongsToMany(Taxonomy::class ,'blogs_taxonomies','blog_id', 'taxonomy_id');
     }
 
+    public function images()
+    {
+        return $this->hasMany(BlogImages::class, 'blog_id', 'id');
+    }
+
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -145,7 +150,6 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category']['id'];
-        $item->image_name = $inputs['image'];
         $item->save();
 
         $taxonomies_id = [];
@@ -155,6 +159,14 @@ class Blog extends Model
           array_push($taxonomies_id,$taxonomy['id']);
         }
         $item->taxonomies()->attach($taxonomies_id);
+
+
+        foreach ($inputs['images'] as $image) {
+            BlogImages::create([
+                'blog_id' =>  $item->id,
+                'image_name' => $image
+            ]);
+        }
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -168,7 +180,7 @@ class Blog extends Model
 
         if(!isset($filter['sort']))
         {
-            return $query->orderBy('id', 'desc')->with('category', 'taxonomies');
+            return $query->orderBy('id', 'desc')->with('category', 'taxonomies', 'images');
         }
 
         $sort = $filter['sort'];
@@ -178,12 +190,12 @@ class Blog extends Model
 
         if(!$direction)
         {
-            return $query->orderBy($sort, 'asc')->with('category', 'taxonomies');
+            return $query->orderBy($sort, 'asc')->with('category', 'taxonomies', 'images');
         }
 
         $sort = explode(':', $sort);
 
-        return $query->orderBy($sort[0], $sort[1])->with('category', 'taxonomies');
+        return $query->orderBy($sort[0], $sort[1])->with('category', 'taxonomies', 'images');
     }
     //-------------------------------------------------
     public function scopeIsActiveFilter($query, $filter)
@@ -502,7 +514,6 @@ class Blog extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->category_id = $inputs['category']['id'];
-        $item->image_name = $inputs['image'];
         $item->save();
 
         $taxonomies_id = [];
@@ -513,6 +524,15 @@ class Blog extends Model
         }
 
         $item->taxonomies()->sync($taxonomies_id);
+
+        $item->images()->delete();
+
+        foreach ($inputs['images'] as $image) {
+            BlogImages::create([
+                'blog_id' =>  $item->id,
+                'image_name' => $image
+            ]);
+        }
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -573,7 +593,7 @@ class Blog extends Model
             'slug' => 'required|max:150',
             'category' => 'required',
             'taxonomies' => 'required',
-            'image' => 'required'
+            'images' => 'required'
         );
 
         $validator = \Validator::make($inputs, $rules);
@@ -621,31 +641,22 @@ class Blog extends Model
     }
     //-------------------------------------------------
     public static function imageUpload($request){
-//        $inputs = $request->all();
-//
-//        $rules = array(
-//            'image' => 'required|mimes:png|max:1024'
-//        );
-//
-//        $validator = \Validator::make($inputs, $rules);
-//        if ($validator->fails()) {
-//            $messages = $validator->errors();
-//            $response['success'] = false;
-//            $response['messages'] = $messages->all();
-//            return $response;
-//        }
 
-        if($request->hasFile('image')){
-            $upload_path = public_path('images');
-            $image = $request->file('image');
-            $file_name = time() . '.' .  $image->getClientOriginalName();
-            $image->move($upload_path, $file_name);
+        $images_name = [];
+        $upload_path = public_path('images');
+        if($request->hasFile('images')){
+            $images = $request->file('images');
+            foreach ($images as $image)
+            {
+                $file_name = time() . '.' .  $image->getClientOriginalName();
+                $image->move($upload_path, $file_name);
+                array_push( $images_name, $file_name);
+            }
 
             $response['success'] = true;
-            $response['file_name'] = $file_name;
+            $response['files_name'] = $images_name;
 
             return $response;
-
         }
     }
     //-------------------------------------------------

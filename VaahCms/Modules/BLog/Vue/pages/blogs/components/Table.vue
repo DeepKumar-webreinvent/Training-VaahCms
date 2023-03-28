@@ -1,15 +1,22 @@
 <script setup>
 import { vaah } from '../../../vaahvue/pinia/vaah'
 import { useBlogStore } from '../../../stores/store-blogs'
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 
 const store = useBlogStore();
 const useVaah = vaah();
 const visible = ref(false);
-let img = ref("");
-const showImage = (imageName) => {
-     img.value = base_url + '/images/' + imageName;
+let imagesName = reactive([]);
+
+const showImage = (images) => {
+    imagesName.splice(0, imagesName.length);
+    images.forEach(getImagesName)
+
+    function getImagesName(item) {
+        imagesName.push(item.image_name);
+    }
+     // img.value = base_url + '/images/' + imageName;
      visible.value = true;
 }
 </script>
@@ -41,14 +48,16 @@ const showImage = (imageName) => {
                  <template #body="prop">
                      <Button label="Show"
                              icon="pi pi-external-link"
-                             @click="showImage(prop.data.image_name)"
-                             v-if="prop.data.image_name"/>
+                             @click="showImage(prop.data.images)"
+                             v-if="prop.data.images.length > 0"/>
                      <p v-else> - </p>
                      <Dialog v-model:visible="visible" maximizable  header="Image">
-                     <img :src="img"
-                          alt="image"
-                          height="1000"
-                          width="1000">
+                         <div v-for="(image,i) in imagesName" :key="i">
+                             <img :src="base_url + '/images/' +image"
+                                  alt="image"
+                                  height="1000"
+                                  width="1000">
+                         </div>
                      </Dialog>
                  </template>
              </Column>
