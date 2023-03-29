@@ -6,6 +6,9 @@ import axios from 'axios'
 import VhField from './../../vaahvue/vue-three/primeflex/VhField.vue'
 import {useRoute} from 'vue-router';
 import {vaah} from "../../vaahvue/pinia/vaah";
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
+
 
 const store = useBlogStore();
 const route = useRoute();
@@ -22,7 +25,6 @@ onMounted(async () => {
     await store.watchItem();
 
 });
-
 
 const onFileChange = async (event) => {
     const config = {
@@ -45,16 +47,15 @@ const onFileChange = async (event) => {
         formData.append('images[]',attachment[i]);
     }
 
-    // formData.append('image', event.files[0]);
     let url =  ajax_url+ "/image/upload";
     await  axios.post(url, formData, config).then(res =>{
        store.item.images = res.data.files_name;
+        toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
     }).catch(error => {
         console.log("errors" + error);
     });
 
 }
-
 
 //--------form_menu
 const form_menu = ref();
@@ -134,13 +135,17 @@ const toggleFormMenu = (event) => {
 
 
             <div v-if="store.item">
+
                 <VhField label="Image">
-                    <FileUpload
-                                mode="basic"
-                                accept="image/*"
-                                :multiple="true"
-                                customUpload
-                                @select="onFileChange" />
+                    <FileUpload  @uploader="onFileChange($event)"
+                                 customUpload
+                                 :multiple="true"
+                                 accept="image/*"
+                                 :maxFileSize="1000000">
+                        <template #empty>
+                            <p>Drag and drop files to here to upload.</p>
+                        </template>
+                    </FileUpload>
 
                 </VhField>
 
