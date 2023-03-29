@@ -153,13 +153,19 @@ const toggleItemMenu = (event) => {
                             />
                         </template>
 
-                        <template v-else-if="column === 'taxonomies'" data="#value">
+                        <template v-else-if="column === 'taxonomies'">
                             <VhViewRow label="Tag"
+                                       :value="value"
+                                       type="tag"
+                            />
+                        </template>
+
+                        <template v-else-if="column === 'images'">
+                            <VhViewRow label="Images"
+                                       :value="value"
+                                       type="image"
 
                             />
-                            <div v-for="(taxonomy) in value">
-                                <Tag :value="taxonomy.name"></Tag>
-                            </div>
                         </template>
 
                         <template v-else-if="(column === 'created_by_user' || column === 'updated_by_user'  || column === 'deleted_by_user') && (typeof value === 'object' && value !== null)">

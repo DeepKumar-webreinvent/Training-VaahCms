@@ -1,5 +1,6 @@
 <script setup>
 import {vaah} from '../../pinia/vaah.js'
+import {reactive, ref} from "vue";
 let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 
 const props = defineProps({
@@ -23,6 +24,19 @@ const props = defineProps({
         default: false
     }
 })
+
+const visible = ref(false);
+let imagesName = reactive([]);
+
+const showImage = (images) => {
+    imagesName.splice(0, imagesName.length);
+    images.forEach(getImagesName)
+
+    function getImagesName(item) {
+        imagesName.push(item.image_name);
+    }
+    visible.value = true;
+}
 
 //['label', 'value', 'type']
 
@@ -54,15 +68,31 @@ const props = defineProps({
             </td>
         </template>
         <template v-else-if="type==='image'">
+            <Button label="Show"
+                    icon="pi pi-external-link"
+                    @click="showImage(value)"
+                    v-if="value.length > 0"/>
+            <p v-else> - </p>
+            <Dialog v-model:visible="visible" maximizable  header="Image">
+                <div class="grid container">
+                    <div class="col-3 col-offset-1"  v-for="(image,i) in imagesName" :key="i">
+                        <img :src="base_url + '/images/' +image"
+                             alt="image"
+                             width="1000"
+                             height="1000">
+                    </div>
+                </div>
+            </Dialog>
+        </template>
+
+        <template v-else-if="type==='tag'">
             <td colspan="2">
-                <img v-if="value !== 'NULL'"
-                     :src="base_url + '/images/' +value"
-                     alt="image"
-                     height="150"
-                     width="150">
-                <p v-else> - </p>
+                <div v-for="(taxonomy) in value">
+                    <Tag :value="taxonomy.name"></Tag>
+                </div>
             </td>
         </template>
+
         <template v-else>
             <td  colspan="2">{{value}}</td>
         </template>

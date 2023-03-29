@@ -16,7 +16,6 @@ const showImage = (images) => {
     function getImagesName(item) {
         imagesName.push(item.image_name);
     }
-     // img.value = base_url + '/images/' + imageName;
      visible.value = true;
 }
 </script>
@@ -52,12 +51,16 @@ const showImage = (images) => {
                              v-if="prop.data.images.length > 0"/>
                      <p v-else> - </p>
                      <Dialog v-model:visible="visible" maximizable  header="Image">
-                         <div v-for="(image,i) in imagesName" :key="i">
-                             <img :src="base_url + '/images/' +image"
-                                  alt="image"
-                                  height="1000"
-                                  width="1000">
-                         </div>
+                             <div class="grid container">
+                                 <div class="col-3 col-offset-1"  v-for="(image,i) in imagesName" :key="i">
+                                     <img :src="base_url + '/images/' +image"
+                                          alt="image"
+                                          width="1000"
+                                          height="1000"
+                                        >
+
+                                 </div>
+                             </div>
                      </Dialog>
                  </template>
              </Column>

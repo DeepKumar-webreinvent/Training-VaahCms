@@ -463,7 +463,7 @@ class Blog extends Model
     {
 
         $item = self::where('id', $id)
-            ->with(['createdByUser', 'updatedByUser', 'deletedByUser', 'category', 'taxonomies'])
+            ->with(['createdByUser', 'updatedByUser', 'deletedByUser', 'category', 'taxonomies', 'images'])
             ->withTrashed()
             ->first();
 
@@ -641,7 +641,7 @@ class Blog extends Model
     }
     //-------------------------------------------------
     public static function imageUpload($request){
-        
+
         $images_name = [];
         $upload_path = public_path('images');
         if($request->hasFile('images')){
