@@ -139,6 +139,9 @@ const toggleItemMenu = (event) => {
                         <template v-if="column === 'created_by' || column === 'updated_by'">
                         </template>
 
+                        <template v-if="column === 'images_name'">
+                        </template>
+
                         <template v-else-if="column === 'id' || column === 'uuid'">
                             <VhViewRow :label="column"
                                        :value="value"
@@ -185,8 +188,6 @@ const toggleItemMenu = (event) => {
                                        type="yes-no"
                             />
                         </template>
-
-
 
                         <template v-else>
                             <VhViewRow :label="column"

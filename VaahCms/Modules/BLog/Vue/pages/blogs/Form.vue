@@ -49,13 +49,15 @@ const onFileChange = async (event) => {
 
     let url =  ajax_url+ "/image/upload";
     await  axios.post(url, formData, config).then(res =>{
-       store.item.images = res.data.files_name;
+       store.item.images_name = res.data.files_name;
         toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
+        store.image_show = true;
     }).catch(error => {
         console.log("errors" + error);
     });
 
 }
+
 
 //--------form_menu
 const form_menu = ref();
@@ -193,6 +195,18 @@ const toggleFormMenu = (event) => {
                                  data-testid="blogs-active"
                                  v-model="store.item.is_active"/>
                 </VhField>
+
+                <hr>
+
+                <div class="grid container" v-if="store.image_show">
+                    <div class="col-3 col-offset-1"  v-for="(image,i) in store.item.images_name" :key="i">
+
+                        <Image :src="base_url + '/images/' +image"
+                               preview
+                               alt="Image"
+                               width="500" />
+                    </div>
+                </div>
 
             </div>
         </Panel>

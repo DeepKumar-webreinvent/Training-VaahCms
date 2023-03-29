@@ -42,6 +42,7 @@ export const useBlogStore = defineStore({
         catagory: null,
         taxonomies:null,
         item: null,
+        image_show:false,
         fillable:null,
         empty_query:empty_states.query,
         empty_action:empty_states.action,
@@ -236,7 +237,16 @@ export const useBlogStore = defineStore({
         {
             if(data)
             {
+                 let img_names = [];
+                 let images = data.images;
+                images.forEach(imagesName);
+
+                function imagesName(value) {
+                    img_names.push(value.image_name);
+                }
                 this.item = data;
+                this.item.images_name = img_names;
+                this.image_show = true;
             }else{
                 this.$router.push({name: 'blogs.index'});
             }
@@ -439,6 +449,7 @@ export const useBlogStore = defineStore({
         {
             if(data)
             {
+                this.image_show = false;
                 this.item = data;
                 await this.getList();
                 await this.formActionAfter();

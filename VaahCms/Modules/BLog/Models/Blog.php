@@ -160,13 +160,15 @@ class Blog extends Model
         }
         $item->taxonomies()->attach($taxonomies_id);
 
-
-        foreach ($inputs['images'] as $image) {
-            BlogImages::create([
-                'blog_id' =>  $item->id,
-                'image_name' => $image
-            ]);
-        }
+         if(count($inputs['images_name']) > 0)
+         {
+             foreach ($inputs['images_name'] as $image) {
+                 BlogImages::create([
+                     'blog_id' =>  $item->id,
+                     'image_name' => $image
+                 ]);
+             }
+         }
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -483,7 +485,8 @@ class Blog extends Model
     public static function updateItem($request, $id)
     {
         $inputs = $request->all();
-        $validation = self::validation($inputs);
+        $validation = self::validationUpdate($inputs);
+
         if (!$validation['success']) {
             return $validation;
         }
@@ -525,15 +528,17 @@ class Blog extends Model
 
         $item->taxonomies()->sync($taxonomies_id);
 
-        $item->images()->delete();
+        if(count($inputs['images_name']) > 0)
+        {
+            $item->images()->delete();
 
-        foreach ($inputs['images'] as $image) {
-            BlogImages::create([
-                'blog_id' =>  $item->id,
-                'image_name' => $image
-            ]);
+            foreach ($inputs['images_name'] as $image) {
+                BlogImages::create([
+                    'blog_id' =>  $item->id,
+                    'image_name' => $image
+                ]);
+            }
         }
-
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
         return $response;
@@ -593,7 +598,7 @@ class Blog extends Model
             'slug' => 'required|max:150',
             'category' => 'required',
             'taxonomies' => 'required',
-            'images' => 'required'
+            'images_name' => 'required'
         );
 
         $validator = \Validator::make($inputs, $rules);
@@ -609,6 +614,29 @@ class Blog extends Model
 
     }
 
+    //-------------------------------------------------
+
+    public static function validationUpdate($inputs)
+    {
+        $rules = array(
+            'name' => 'required|max:150',
+            'slug' => 'required|max:150',
+            'category' => 'required',
+            'taxonomies' => 'required',
+        );
+
+        $validator = \Validator::make($inputs, $rules);
+        if ($validator->fails()) {
+            $messages = $validator->errors();
+            $response['success'] = false;
+            $response['messages'] = $messages->all();
+            return $response;
+        }
+
+        $response['success'] = true;
+        return $response;
+
+    }
     //-------------------------------------------------
     public static function getActiveItems()
     {
