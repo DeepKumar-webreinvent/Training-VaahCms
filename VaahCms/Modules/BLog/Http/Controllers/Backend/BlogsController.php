@@ -37,7 +37,6 @@ class BlogsController extends Controller
                 'updated_by',
                 'deleted_by',
             ];
-
             $model = new Blog();
             $fillable = $model->getFillable();
             $data['fillable']['columns'] = array_diff(
@@ -48,7 +47,6 @@ class BlogsController extends Controller
             {
                 $data['empty_item'][$column] = null;
             }
-
             $data['actions'] = [];
 
             $data['catagory'] = Category::where('is_active',1)->get();

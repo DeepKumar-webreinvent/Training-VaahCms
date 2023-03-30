@@ -41,7 +41,7 @@ const onFileChange = async (event) => {
     }
 
     let selectedFiles = event.files;
-
+    console.log(selectedFiles);
     if(!selectedFiles.length)
     {
         return false;
@@ -58,18 +58,14 @@ const onFileChange = async (event) => {
     let url =  ajax_url+ "/image/upload";
     await  axios.post(url, formData, config).then(res =>{
         let uniqueFilesName = res.data.files_name.filter((value, index, array) => array.indexOf(value) === index);
-        // console.log(uniqueFilesName);
 
         if(route.params && route.params.id)
         {
-             let filesNames=  store.item.images_name.concat(uniqueFilesName);
-             console.log(filesNames);
-            // let text = filesNames.join(" and ");
-            //  console.log(text);
-             let updatedFilesNames = filesNames.filter((value, index, array) => array.indexOf(value) === index);
+                let filesNames=  store.item.images_name.concat(uniqueFilesName);
+                let updatedFilesNames = filesNames.filter((value, index, array) => array.indexOf(value) === index);
 
-            store.item.images_name = updatedFilesNames;
-            // store.item.images_name = uniqueFilesName;
+                store.item.images_name = updatedFilesNames;
+
         }
         else{
             store.item.images_name = uniqueFilesName;

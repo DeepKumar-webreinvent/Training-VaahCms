@@ -655,7 +655,7 @@ class Blog extends Model
             $images = $request->file('images');
             foreach ($images as $image)
             {
-                $file_name = time() . '.' .  $image->getClientOriginalName();
+                $file_name = $image->getClientOriginalName();
                 $image->move($upload_path, $file_name);
                 array_push( $images_name, $file_name);
                 array_push(  $image_object, $image);

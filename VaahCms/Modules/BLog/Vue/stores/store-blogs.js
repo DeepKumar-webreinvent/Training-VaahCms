@@ -188,6 +188,7 @@ export const useBlogStore = defineStore({
         {
             if(data)
             {
+
                 this.assets = data;
                 this.catagory = data.catagory;
                 this.taxonomies= data.taxonomies;
@@ -449,8 +450,16 @@ export const useBlogStore = defineStore({
         {
             if(data)
             {
-                this.image_show = false;
+                let img_names = [];
+                let images = data.images;
+                images.forEach(imagesName);
+
+                function imagesName(value) {
+                    img_names.push(value.image_name);
+                }
+                this.image_show = true;
                 this.item = data;
+                this.item.images_name=img_names;
                 await this.getList();
                 await this.formActionAfter();
                 this.getItemMenu();
@@ -461,6 +470,7 @@ export const useBlogStore = defineStore({
         {
             switch (this.form.action)
             {
+
                 case 'create-and-new':
                 case 'save-and-new':
                     this.setActiveItemAsEmpty();
