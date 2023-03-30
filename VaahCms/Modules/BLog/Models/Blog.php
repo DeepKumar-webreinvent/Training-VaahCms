@@ -485,7 +485,7 @@ class Blog extends Model
     public static function updateItem($request, $id)
     {
         $inputs = $request->all();
-        $validation = self::validationUpdate($inputs);
+        $validation = self::validation($inputs);
 
         if (!$validation['success']) {
             return $validation;
@@ -616,28 +616,6 @@ class Blog extends Model
 
     //-------------------------------------------------
 
-    public static function validationUpdate($inputs)
-    {
-        $rules = array(
-            'name' => 'required|max:150',
-            'slug' => 'required|max:150',
-            'category' => 'required',
-            'taxonomies' => 'required',
-        );
-
-        $validator = \Validator::make($inputs, $rules);
-        if ($validator->fails()) {
-            $messages = $validator->errors();
-            $response['success'] = false;
-            $response['messages'] = $messages->all();
-            return $response;
-        }
-
-        $response['success'] = true;
-        return $response;
-
-    }
-    //-------------------------------------------------
     public static function getActiveItems()
     {
         $item = self::where('is_active', 1)
@@ -671,6 +649,7 @@ class Blog extends Model
     public static function imageUpload($request){
 
         $images_name = [];
+        $image_object = [];
         $upload_path = public_path('images');
         if($request->hasFile('images')){
             $images = $request->file('images');
@@ -679,10 +658,12 @@ class Blog extends Model
                 $file_name = time() . '.' .  $image->getClientOriginalName();
                 $image->move($upload_path, $file_name);
                 array_push( $images_name, $file_name);
+                array_push(  $image_object, $image);
             }
 
             $response['success'] = true;
             $response['files_name'] = $images_name;
+            $response['images'] = $image_object;
 
             return $response;
         }

@@ -13,6 +13,8 @@ const toast = useToast();
 const store = useBlogStore();
 const route = useRoute();
 let attachment = reactive([]);
+let newImagesName = reactive([]);
+
 
 let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 let ajax_url = base_url + "/backend/blog/blogs";
@@ -26,6 +28,11 @@ onMounted(async () => {
 
 });
 
+const removeImage =  (imageName) => {
+    newImagesName = store.item.images_name.filter(item => item !== imageName);
+    store.item.images_name = newImagesName;
+}
+
 const onFileChange = async (event) => {
     const config = {
         headers: {
@@ -34,6 +41,7 @@ const onFileChange = async (event) => {
     }
 
     let selectedFiles = event.files;
+
     if(!selectedFiles.length)
     {
         return false;
@@ -49,7 +57,24 @@ const onFileChange = async (event) => {
 
     let url =  ajax_url+ "/image/upload";
     await  axios.post(url, formData, config).then(res =>{
-       store.item.images_name = res.data.files_name;
+        let uniqueFilesName = res.data.files_name.filter((value, index, array) => array.indexOf(value) === index);
+        // console.log(uniqueFilesName);
+
+        if(route.params && route.params.id)
+        {
+             let filesNames=  store.item.images_name.concat(uniqueFilesName);
+             console.log(filesNames);
+            // let text = filesNames.join(" and ");
+            //  console.log(text);
+             let updatedFilesNames = filesNames.filter((value, index, array) => array.indexOf(value) === index);
+
+            store.item.images_name = updatedFilesNames;
+            // store.item.images_name = uniqueFilesName;
+        }
+        else{
+            store.item.images_name = uniqueFilesName;
+        }
+
         toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
         store.image_show = true;
     }).catch(error => {
@@ -57,6 +82,7 @@ const onFileChange = async (event) => {
     });
 
 }
+
 
 
 //--------form_menu
@@ -130,9 +156,6 @@ const toggleFormMenu = (event) => {
                             @click="store.toList()">
                     </Button>
                 </div>
-
-
-
             </template>
 
 
@@ -205,6 +228,11 @@ const toggleFormMenu = (event) => {
                                preview
                                alt="Image"
                                width="500" />
+                        <Button class="p-button-primary"
+                                icon="pi pi-times"
+                                data-testid="blogs-to-list"
+                                @click="removeImage(image)">
+                        </Button>
                     </div>
                 </div>
 
