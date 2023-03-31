@@ -12,7 +12,7 @@ const toast = useToast();
 
 const store = useBlogStore();
 const route = useRoute();
-let attachment = reactive([]);
+// let attachment = reactive([]);
 let newImagesName = reactive([]);
 
 
@@ -25,12 +25,14 @@ onMounted(async () => {
         await store.getItem(route.params.id);
     }
     await store.watchItem();
-
 });
 
 const removeImage =  (imageName) => {
     newImagesName = store.item.images_name.filter(item => item !== imageName);
     store.item.images_name = newImagesName;
+
+    let newAttachment = store.attachment.filter(item => item.name !== imageName);
+    store.attachment = newAttachment;
 }
 
 const onFileChange = async (event) => {
@@ -41,18 +43,18 @@ const onFileChange = async (event) => {
     }
 
     let selectedFiles = event.files;
-    console.log(selectedFiles);
     if(!selectedFiles.length)
     {
         return false;
     }
+
     for(let i=0; i<selectedFiles.length; i++){
-         attachment.push(selectedFiles[i]);
+         store.attachment.push(selectedFiles[i]);
     }
 
     let formData  = new FormData();
-    for(let i=0; i<attachment.length; i++){
-        formData.append('images[]',attachment[i]);
+    for(let i=0; i<store.attachment.length; i++){
+        formData.append('images[]',store.attachment[i]);
     }
 
     let url =  ajax_url+ "/image/upload";

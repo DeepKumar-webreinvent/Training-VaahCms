@@ -39,6 +39,9 @@ class Blog extends Model
     ];
     //-------------------------------------------------
 
+    protected $hidden = ['pivot'];
+    //-------------------------------------------------
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -645,11 +648,11 @@ class Blog extends Model
         $response['messages'][] = 'Status change successfully.';
         return $response;
     }
-    //-------------------------------------------------
+    //-------------------------------------------------\
+
     public static function imageUpload($request){
 
         $images_name = [];
-        $image_object = [];
         $upload_path = public_path('images');
         if($request->hasFile('images')){
             $images = $request->file('images');
@@ -658,12 +661,10 @@ class Blog extends Model
                 $file_name = $image->getClientOriginalName();
                 $image->move($upload_path, $file_name);
                 array_push( $images_name, $file_name);
-                array_push(  $image_object, $image);
             }
 
             $response['success'] = true;
             $response['files_name'] = $images_name;
-            $response['images'] = $image_object;
 
             return $response;
         }

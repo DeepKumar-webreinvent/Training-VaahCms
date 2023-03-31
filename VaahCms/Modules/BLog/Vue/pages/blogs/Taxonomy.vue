@@ -2,13 +2,13 @@
 <script setup>
 import { useBlogStore } from '../../stores/store-blogs'
 import {useRoute} from 'vue-router';
-import {onMounted, ref, reactive, computed } from "vue";
+import {onMounted, ref, reactive, computed, onBeforeMount} from "vue";
 
 const store = useBlogStore();
 const route = useRoute();
 // const selectedCategories = ref(['comedy']);
 
-onMounted(async () => {
+onBeforeMount(async () => {
     if(route.params && route.params.id)
     {
         await store.getItem(route.params.id);
@@ -16,8 +16,6 @@ onMounted(async () => {
 
 });
 
-let taxonomies = store.item.taxonomies;
-let blogId= store.item.id;
 function checkTaxonomystatus(taxonomies, currentTaxonomy)
 {
          const taxonomiesName = taxonomies.map(getTaxonomiesName);
@@ -66,10 +64,10 @@ function checkTaxonomystatus(taxonomies, currentTaxonomy)
                 <tr v-for="(taxonomy, index) in store.taxonomies" :key="taxonomy.id">
                     <td>{{taxonomy.name}}</td>
                         <Button label="Yes"  size="small" severity="success"
-                                v-if="checkTaxonomystatus(taxonomies, taxonomy)"
-                                @click="store.changeStatus(blogId, taxonomy.id)" rounded/>
+                                v-if="checkTaxonomystatus(store.item.taxonomies, taxonomy)"
+                                @click="store.changeStatus( store.item.id, taxonomy.id)" rounded/>
                         <Button label="No"  size="small" v-else
-                                @click="store.changeStatus(blogId, taxonomy.id)" rounded/>
+                                @click="store.changeStatus( store.item.id, taxonomy.id)" rounded/>
                 </tr>
                 </tbody>
             </table>

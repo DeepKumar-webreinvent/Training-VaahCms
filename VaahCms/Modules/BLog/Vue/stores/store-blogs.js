@@ -43,6 +43,7 @@ export const useBlogStore = defineStore({
         taxonomies:null,
         item: null,
         image_show:false,
+        attachment:[],
         fillable:null,
         empty_query:empty_states.query,
         empty_action:empty_states.action,
@@ -457,6 +458,8 @@ export const useBlogStore = defineStore({
                 function imagesName(value) {
                     img_names.push(value.image_name);
                 }
+
+                this.attachment = [];
                 this.image_show = true;
                 this.item = data;
                 this.item.images_name=img_names;
