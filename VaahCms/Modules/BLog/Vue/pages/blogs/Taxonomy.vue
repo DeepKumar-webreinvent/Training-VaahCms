@@ -6,7 +6,7 @@ import {onMounted, ref, reactive, computed, onBeforeMount} from "vue";
 
 const store = useBlogStore();
 const route = useRoute();
-// const selectedCategories = ref(['comedy']);
+
 
 onBeforeMount(async () => {
     if(route.params && route.params.id)
@@ -16,15 +16,11 @@ onBeforeMount(async () => {
 
 });
 
-function checkTaxonomystatus(taxonomies, currentTaxonomy)
+function checkTagstatus(tags, currentTag)
 {
-         const taxonomiesName = taxonomies.map(getTaxonomiesName);
+         const tagsName = tags.map((value) => [value.name].join(","));
 
-         function getTaxonomiesName(value) {
-             return [value.name].join(",");
-         }
-
-         return  (taxonomiesName.includes(currentTaxonomy.name));
+         return  (tagsName.includes(currentTag.name));
 }
 
 </script>
@@ -33,24 +29,21 @@ function checkTaxonomystatus(taxonomies, currentTaxonomy)
     <div class="col-6" >
         <Panel >
             <template class="p-1" #header>
-                <div class="flex flex-row justify-content-between">
                     <div class="p-panel-title">
                             <span>
                                 Tag
                             </span>
                     </div>
+            </template>
 
-                    <div class="ml-4">
+
+            <template #icons>
                         <Button class="p-button-primary"
                                 icon="pi pi-times"
                                 data-testid="blogs-to-list"
                                 @click="store.toList()">
                         </Button>
-                    </div>
-
-                </div>
             </template>
-
 
 
             <table class="table">
@@ -61,13 +54,15 @@ function checkTaxonomystatus(taxonomies, currentTaxonomy)
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(taxonomy, index) in store.taxonomies" :key="taxonomy.id">
-                    <td>{{taxonomy.name}}</td>
+                <tr v-for="(tag) in store.tags" :key="tag.id">
+                    <td>{{tag.name}}</td>
+                    <td>
                         <Button label="Yes"  size="small" severity="success"
-                                v-if="checkTaxonomystatus(store.item.taxonomies, taxonomy)"
-                                @click="store.changeStatus( store.item.id, taxonomy.id)" rounded/>
+                                v-if="checkTagstatus(store.item.tags, tag)"
+                                @click="store.changeStatus( store.item.id, tag.id)" rounded/>
                         <Button label="No"  size="small" v-else
-                                @click="store.changeStatus( store.item.id, taxonomy.id)" rounded/>
+                                @click="store.changeStatus( store.item.id, tag.id)" rounded/>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -78,5 +73,7 @@ function checkTaxonomystatus(taxonomies, currentTaxonomy)
 
 
 <style scoped>
-
+.table tr td{
+    text-align: center;
+}
 </style>

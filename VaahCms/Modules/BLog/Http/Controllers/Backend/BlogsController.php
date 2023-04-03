@@ -51,7 +51,7 @@ class BlogsController extends Controller
 
             $data['catagory'] = Category::where('is_active',1)->get();
 
-            $data['taxonomies'] = Taxonomy::getTaxonomyByType('blog-tag');
+            $data['tags'] = Taxonomy::getTaxonomyByType('blog-tag');
 
             $response['success'] = true;
             $response['data'] = $data;
@@ -226,9 +226,9 @@ class BlogsController extends Controller
     }
     //----------------------------------------------------------
 
-    public function changeTaxonomyStatus(Request $request,$id){
+    public function changeTagStatus(Request $request,$id){
         try{
-            return Blog::changeTaxonomyStatus($request,$id);
+            return Blog::changeTagStatus($request,$id);
         }catch (\Exception $e){
             $response = [];
             $response['status'] = 'failed';

@@ -69,8 +69,8 @@ function () {
     /**
      * Item actions with taxonomies
      */
-    Route::post('/status/{blogId}', 'BlogsController@changeTaxonomyStatus')
-        ->name('vh.backend.blog.blogs.item.action.changetaxonomystatus');
+    Route::post('/status/{blogId}', 'BlogsController@changeTagStatus')
+        ->name('vh.backend.blog.blogs.item.action.changetagstatus');
 
     //---------------------------------------------------------
 

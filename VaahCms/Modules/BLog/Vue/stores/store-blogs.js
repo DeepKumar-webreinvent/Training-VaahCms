@@ -40,7 +40,7 @@ export const useBlogStore = defineStore({
         rows_per_page: [10,20,30,50,100,500],
         list: null,
         catagory: null,
-        taxonomies:null,
+        tags:null,
         item: null,
         image_show:false,
         attachment:[],
@@ -192,7 +192,7 @@ export const useBlogStore = defineStore({
 
                 this.assets = data;
                 this.catagory = data.catagory;
-                this.taxonomies= data.taxonomies;
+                this.tags= data.tags;
                 if(data.rows)
                 {
                     this.query.rows = data.rows;
@@ -257,11 +257,11 @@ export const useBlogStore = defineStore({
         },
         //---------------------------------------------------------------------
 
-        async changeStatus(blogId, taxonomyId){
-             if(blogId &&  taxonomyId){
+        async changeStatus(blogId, tagId){
+             if(blogId &&  tagId){
                  let options = {
                      params: {
-                         taxonomy_id:  taxonomyId
+                         tag_id:  tagId
                      },
                      method: 'POST',
                  };
@@ -580,6 +580,7 @@ export const useBlogStore = defineStore({
         async delayedSearch()
         {
             let self = this;
+            console.log(self);
             this.query.page = 1;
             this.action.items = [];
             clearTimeout(this.search.delay_timer);

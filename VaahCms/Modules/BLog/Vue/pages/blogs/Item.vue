@@ -156,7 +156,7 @@ const toggleItemMenu = (event) => {
                             />
                         </template>
 
-                        <template v-else-if="column === 'taxonomies'">
+                        <template v-else-if="column === 'tags'">
                             <VhViewRow label="Tag"
                                        :value="value"
                                        type="tag"

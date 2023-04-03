@@ -87,7 +87,7 @@ const showImage = (images) => {
                         :sortable="false">
 
                  <template #body="prop">
-                     <Button :label="prop.data.taxonomies.length + '/' + store.taxonomies.length"
+                     <Button :label="prop.data.tags.length + '/' + store.tags.length"
                              v-tooltip.top="'view Tags'"
                              rounded
                              @click="store.toViewTaxonomies(prop.data)"/>

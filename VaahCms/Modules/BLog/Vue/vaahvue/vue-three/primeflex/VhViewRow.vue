@@ -87,8 +87,8 @@ const showImage = (images) => {
 
         <template v-else-if="type==='tag'">
             <td colspan="2">
-                <div v-for="(taxonomy) in value">
-                    <Tag :value="taxonomy.name"></Tag>
+                <div v-for="(tag) in value">
+                    <Tag :value="tag.name"></Tag>
                 </div>
             </td>
         </template>

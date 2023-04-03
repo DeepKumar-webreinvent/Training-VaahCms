@@ -47,7 +47,7 @@ class Blog extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function taxonomies()
+    public function tags()
     {
         return $this->belongsToMany(Taxonomy::class ,'blogs_taxonomies','blog_id', 'taxonomy_id');
     }
@@ -155,13 +155,13 @@ class Blog extends Model
         $item->category_id = $inputs['category']['id'];
         $item->save();
 
-        $taxonomies_id = [];
-        $taxonomies= $inputs['taxonomies'];
-        foreach ($taxonomies as $taxonomy)
+        $tags_id = [];
+        $tags= $inputs['tags'];
+        foreach ($tags as $tag)
         {
-          array_push($taxonomies_id,$taxonomy['id']);
+          array_push($tags_id,$tag['id']);
         }
-        $item->taxonomies()->attach($taxonomies_id);
+        $item->tags()->attach($tags_id);
 
          if(count($inputs['images_name']) > 0)
          {
@@ -185,7 +185,7 @@ class Blog extends Model
 
         if(!isset($filter['sort']))
         {
-            return $query->orderBy('id', 'desc')->with('category', 'taxonomies', 'images');
+            return $query->orderBy('id', 'desc')->with('category', 'tags', 'images');
         }
 
         $sort = $filter['sort'];
@@ -195,12 +195,12 @@ class Blog extends Model
 
         if(!$direction)
         {
-            return $query->orderBy($sort, 'asc')->with('category', 'taxonomies', 'images');
+            return $query->orderBy($sort, 'asc')->with('category', 'tags', 'images');
         }
 
         $sort = explode(':', $sort);
 
-        return $query->orderBy($sort[0], $sort[1])->with('category', 'taxonomies', 'images');
+        return $query->orderBy($sort[0], $sort[1])->with('category', 'tags', 'images');
     }
     //-------------------------------------------------
     public function scopeIsActiveFilter($query, $filter)
@@ -468,7 +468,7 @@ class Blog extends Model
     {
 
         $item = self::where('id', $id)
-            ->with(['createdByUser', 'updatedByUser', 'deletedByUser', 'category', 'taxonomies', 'images'])
+            ->with(['createdByUser', 'updatedByUser', 'deletedByUser', 'category', 'tags', 'images'])
             ->withTrashed()
             ->first();
 
@@ -522,14 +522,14 @@ class Blog extends Model
         $item->category_id = $inputs['category']['id'];
         $item->save();
 
-        $taxonomies_id = [];
-        $taxonomies= $inputs['taxonomies'];
-        foreach ($taxonomies as $taxonomy)
+        $tags_id = [];
+        $tags= $inputs['tags'];
+        foreach ($tags as $tag)
         {
-            array_push($taxonomies_id,$taxonomy['id']);
+            array_push($tags_id,$tag['id']);
         }
 
-        $item->taxonomies()->sync($taxonomies_id);
+        $item->tags()->sync($tags_id);
 
         if(count($inputs['images_name']) > 0)
         {
@@ -600,7 +600,7 @@ class Blog extends Model
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
             'category' => 'required',
-            'taxonomies' => 'required',
+            'tags' => 'required',
             'images_name' => 'required'
         );
 
@@ -628,20 +628,20 @@ class Blog extends Model
 
     //-------------------------------------------------
 
-    public static function changeTaxonomyStatus($request,$id){
+    public static function changeTagStatus($request,$id){
 
         $recordCount = \DB::table('blogs_taxonomies')
                 ->whereBlogId($id)
-                ->whereTaxonomyId($request->taxonomy_id)
+                ->whereTaxonomyId($request->tag_id)
                 ->count();
 
         if($recordCount){
             $item = self::where('id', $id)->first();
-            $item->taxonomies()->detach($request->taxonomy_id);
+            $item->tags()->detach($request->tag_id);
         }
         else{
             $item = self::where('id', $id)->first();
-            $item->taxonomies()->attach($request->taxonomy_id);
+            $item->tags()->attach($request->tag_id);
         }
 
         $response = self::getItem($id);
