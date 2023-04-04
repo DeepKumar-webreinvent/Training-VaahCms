@@ -24,7 +24,18 @@
             <div class="hero-body">
                 <p class="title">BlogTheme</p>
 
-                <p class="subtitle">Welcome Page.</p>
+                {!! vh_block('first-block') !!}
+
+                {!! vh_location('top', true) !!}
+
+{{--                <p class="subtitle">Welcome Page.</p>--}}
+                {!! get_field($data, 'name', 'default') !!}
+
+                {!! get_field($data, 'state', 'default') !!}
+
+                {!! get_field($data, 'description', 'default') !!}
+
+                {!! get_field($data, 'dob', 'default') !!}
 
             </div>
         </section>

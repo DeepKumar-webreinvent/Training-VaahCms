@@ -27,5 +27,15 @@
     "groups": [
     ]
 
-  }
+  },
+    {
+        "template": {
+            "name": " contact us",
+            "type": "page",
+            "file_path": "frontend.contactus"
+        },
+        "groups": [
+        ]
+
+    }
 ]
