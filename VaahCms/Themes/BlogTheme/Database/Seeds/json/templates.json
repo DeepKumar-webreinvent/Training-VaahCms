@@ -30,11 +30,58 @@
   },
     {
         "template": {
+            "name": "band",
+            "type": "page",
+            "file_path": "frontend.band"
+        },
+        "groups": [
+            {
+                "name": "Default",
+                "slug": "default",
+                "fields": [
+                    {
+                        "name": "Title",
+                        "type": {
+                            "slug": "title"
+                        }
+                    },
+                    {
+                        "name": "Title",
+                        "type": {
+                            "slug": "title"
+                        }
+                    }
+                ]
+            }
+        ]
+
+    },
+
+    {
+        "template": {
             "name": " contact us",
             "type": "page",
             "file_path": "frontend.contactus"
         },
         "groups": [
+            {
+                "name": "Default",
+                "slug": "default",
+                "fields": [
+                    {
+                        "name": "Title",
+                        "type": {
+                            "slug": "title"
+                        }
+                    },
+                    {
+                        "name": "Content",
+                        "type": {
+                            "slug": "Textarea"
+                        }
+                    }
+                ]
+            }
         ]
 
     }

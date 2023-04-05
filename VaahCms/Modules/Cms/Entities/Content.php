@@ -281,7 +281,10 @@ class Content extends Model {
 
                             $relation =  vh_content_relations_by_name($field['meta']['type']);
 
-                            if($relation && isset($relation['namespace']) && $relation['namespace']){
+                            if($relation && isset($relation['namespace'])
+                                && $relation['namespace']
+                                && $field && isset($field['content'])
+                                && is_array($field['content'])){
                                 foreach ($field['content'] as $id){
                                     $data = [
                                         'relatable_id' => $id,
@@ -449,6 +452,44 @@ class Content extends Model {
         $content_form_groups = static::getFormGroups($item, 'content');
 
         $template_form_groups = static::getFormGroups($item, 'template');
+
+        $response['status'] = 'success';
+
+        $item->content_form_groups = $content_form_groups;
+        $item->template_form_groups = $template_form_groups;
+
+        $response['data'] = $item;
+
+        return $response;
+
+    }
+    //-------------------------------------------------
+    public static function getApiItem($id)
+    {
+
+        $item = static::where('id', $id)
+            ->with([
+                'contentType', 'theme', 'template',
+                'authorUser', 'createdByUser', 'updatedByUser',
+                'deletedByUser',
+                'fields' => function($f){
+                    $f->with(['group', 'field']);
+                }
+            ])
+            ->withTrashed()
+            ->first();
+
+
+        $group_fields = ContentFormField::where('vh_cms_content_id',$item->id)
+            ->get();
+
+        $group_fields = collect($group_fields);
+
+
+        $content_form_groups = Content::getFormGroupsTest($item, 'content',$group_fields);
+
+        $template_form_groups = Content::getFormGroupsTest($item, 'template',$group_fields);
+
 
         $response['status'] = 'success';
 
@@ -704,6 +745,8 @@ class Content extends Model {
 
                         $content_val = ContentFormField::getContentAsset($content_val, $field->type->slug);
 
+                        $arr_group[$i][$key]['fields'][$y]['content'] = $content_val;
+
                         if(is_string($content_val)){
                             $arr_group[$i][$key]['fields'][$y]['content'] = vh_translate_dynamic_strings(
                                 $content_val
@@ -870,7 +913,7 @@ class Content extends Model {
                         $relatable_ids = ContentFormRelation::where('vh_cms_content_form_field_id',$related_item->id)
                             ->pluck('relatable_id')->toArray();
 
-                        if(!$field['content']){
+                        if(!$field['content'] || !is_array($field['content'])){
                             $row_to_delete_ids = array_diff($relatable_ids, []);
                         }else{
                             $row_to_delete_ids = array_diff($relatable_ids, $field['content']);

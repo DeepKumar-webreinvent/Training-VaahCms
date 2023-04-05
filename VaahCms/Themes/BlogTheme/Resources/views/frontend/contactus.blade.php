@@ -42,6 +42,13 @@
                 <button class="button is-link">Submit</button>
 
 
+
+
+                <hr>
+
+                {!! get_group($data ,'header' ) !!}
+
+
             </div>
         </section>
 

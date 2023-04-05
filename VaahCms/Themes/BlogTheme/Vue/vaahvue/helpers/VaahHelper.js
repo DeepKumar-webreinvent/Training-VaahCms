@@ -25,7 +25,6 @@ const VaahHelper = {
 
     async ajaxGet(url, params, callback )
     {
-
         axios.defaults.headers.common = null;
 
         let q = {
