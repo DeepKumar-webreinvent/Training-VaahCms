@@ -604,7 +604,6 @@ function setReturnValue($field,$field_index = null,
                         $return_html=true)
 {
 
-
     if(!$return_html || !isset($field['type'])
         || !isset($field['type']['slug'])){
         if(is_object($field['content'])){
@@ -777,7 +776,6 @@ function setReturnValue($field,$field_index = null,
                 if($content_is_hidden){
                     return null;
                 }
-
                 $value .= $content_opening_tag."\n";
                 $value .= '<img class="image" src="'.$field['content'].'"/>'."\n";
                 $value .= $content_closing_tag."\n";

@@ -45,10 +45,8 @@
 
 <section class="hero">
     <figure class="image">
-        <img src="https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
-{{--        {!! get_field($data, 'image', 'default') !!}--}}
-{{--        {!! dd(get_field($data, 'image', 'default')) !!}--}}
-{{--        {!! dd(get_field($data, 'image', 'default')) !!}--}}
+        {!! get_field($data, 'image', 'default')!!}
+
     </figure>
 </section>
 
@@ -61,7 +59,6 @@
                 <p>{{$item}}</p>
             @endif
         @endforeach
-{{--        {!! dd(get_field($data, 'description', 'default','content' , 0, 1)) !!}--}}
 
         <div class="columns is-centered" style="padding: 2rem">
             @foreach( get_the_group($data ,'card' ) as $v)
@@ -69,7 +66,7 @@
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-2by1">
-                                <img src="https://images.pexels.com/photos/167635/pexels-photo-167635.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Placeholder image">
+                                <img src="{{$v['image']}}" alt="Placeholder image">
                             </figure>
                         </div>
                         <div class="card-content">
@@ -113,7 +110,7 @@
                 <div class="tile is-parent">
                     <article class="tile is-child box">
                         <figure class="image">
-                            <img src="https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260">
+                            <img src="{{$tour['image']}}">
                         </figure>
                         <p class="title">{{$tour['title']}}</p>
                         <p class="subtitle">{{$tour['subtitle']}}</p>
@@ -129,7 +126,7 @@
                     <div class="tile is-parent">
                         <article class="tile is-child box">
                             <figure class="image">
-                                <img src="https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260">
+                                <img src="{{$tour['image']}}">
                             </figure>
                             <p class="title">{{$tour['title']}}</p>
                             <p class="subtitle">{{$tour['subtitle']}}</p>
