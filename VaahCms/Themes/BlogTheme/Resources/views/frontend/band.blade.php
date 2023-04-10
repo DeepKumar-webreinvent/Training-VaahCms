@@ -61,26 +61,26 @@
         @endforeach
 
         <div class="columns is-centered" style="padding: 2rem">
-            @foreach( get_the_group($data ,'card' ) as $v)
+            @foreach( get_the_group($data ,'card' ) as $card_item)
                 <div class="column">
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-2by1">
-                                <img src="{{$v['image']}}" alt="Placeholder image">
+                                <img src="{{$card_item['image']}}" alt="Placeholder image">
                             </figure>
                         </div>
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-content">
-                                    <p class="title is-4">{{$v['heading']}}</p>
-                                    <p class="subtitle is-6">{{$v['subheading']}}</p>
+                                    <p class="title is-4">{{$card_item['heading']}}</p>
+                                    <p class="subtitle is-6">{{$card_item['subheading']}}</p>
                                 </div>
                             </div>
 
                             <div class="content">
-                                {{$v['content']}}
-                                <a>{{$v['a1']}}</a>.
-                                @foreach($v['a2'] as $a)
+                                {{$card_item['content']}}
+                                <a>{{$card_item['anchor1']}}</a>.
+                                @foreach($card_item['anchor2'] as $a)
                                 <a href="#">{{$a}}</a>
                                 @endforeach
                             </div>

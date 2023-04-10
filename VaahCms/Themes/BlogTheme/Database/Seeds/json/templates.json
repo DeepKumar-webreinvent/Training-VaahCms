@@ -84,5 +84,45 @@
             }
         ]
 
+    },
+
+    {
+        "template": {
+            "name": "tour",
+            "type": "page",
+            "file_path": "frontend.tour"
+        },
+        "groups": [
+            {
+                "name": "Default",
+                "slug": "default",
+                "fields": [
+                    {
+                        "name": "Image",
+                        "type": {
+                            "slug": "Image"
+                        }
+                    },
+                    {
+                        "name": "Title",
+                        "type": {
+                            "slug": "Text"
+                        }
+                    },
+                    {
+                        "name": "Subtitle",
+                        "type": {
+                            "slug": "Text"
+                        }
+                    },
+                    {
+                        "name": "Button",
+                        "type": {
+                            "slug": "Text"
+                        }
+                    }
+                ]
+            }
+        ]
     }
 ]

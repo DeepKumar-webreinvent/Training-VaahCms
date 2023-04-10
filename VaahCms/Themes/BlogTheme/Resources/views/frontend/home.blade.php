@@ -20,14 +20,6 @@
             This is the home page when marked as home from the CMS menu
         </div>
 
-        <section class="hero">
-            <div class="hero-body">
-                <p class="title">BlogTheme</p>
-
-                <p class="subtitle">Home Page</p>
-
-            </div>
-        </section>
 
 </div>
 @endsection
