@@ -20,6 +20,8 @@
             This is the home page when marked as home from the CMS menu
         </div>
 
+    @include('blogtheme::frontend.pages.touritem');
+
 
 </div>
 @endsection

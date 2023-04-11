@@ -42,55 +42,7 @@
     </div>
 </nav>
 
-
-
-<section class="section">
-    <div class="container has-text-centered">
-        <h2 class="title">
-{{--            @foreach(get_the_field($data, 'heading', 'default') as $index=>$item)--}}
-{{--                @if($index == 0)--}}
-{{--                    {{$item}}--}}
-{{--                @endif--}}
-{{--            @endforeach--}}
-        </h2>
-
-        <div class="tile is-ancestor">
-            @foreach(get_the_group($data ,'default' ,'template') as $index=>$tour)
-                @if($index > 4)
-                    @break;
-                @endif
-                <div class="tile is-parent">
-                    <article class="tile is-child box">
-                        <figure class="image">
-                            <img src="{{$tour['image']}}">
-                        </figure>
-                        <p class="title">{{$tour['title']}}</p>
-                        <p class="subtitle">{{$tour['subtitle']}}</p>
-                        <a class="button">{{$tour['button']}}</a>
-                    </article>
-                </div>
-            @endforeach
-        </div>
-
-        <div class="tile is-ancestor">
-            @foreach(get_the_group($data ,'default' ,'template') as $index=>$tour)
-                @if($index >= 5 && $index < 10)
-                    <div class="tile is-parent">
-                        <article class="tile is-child box">
-                            <figure class="image">
-                                <img src="{{$tour['image']}}">
-                            </figure>
-                            <p class="title">{{$tour['title']}}</p>
-                            <p class="subtitle">{{$tour['subtitle']}}</p>
-                            <a class="button">{{$tour['button']}}</a>
-                        </article>
-                    </div>
-                @endif
-            @endforeach
-        </div>
-    </div>
-</section>
-
+@include('blogtheme::frontend.pages.touritem');
 
 <script src="../js/bulma.js"></script>
 </body>
